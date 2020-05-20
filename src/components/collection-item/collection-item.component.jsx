@@ -7,11 +7,12 @@ import { addItem } from '../../redux/cart/cart.actions';
 
 import './collection-item.styles.scss';
 
-const CollectionItem = ({ item, addItem ,history, match, flag }) => {
+const CollectionItem = ({ item, addItem ,history, match, title }) => {
+  const collectionId = title.toLowerCase();
   const { name, price, imageUrl, id } = item;
   return (
     <div className='collection-item'>
-      { flag==='true' ?
+      { match.params.collectionId ?
           <div
           className='image'
           style={{
@@ -25,6 +26,7 @@ const CollectionItem = ({ item, addItem ,history, match, flag }) => {
           style={{
             backgroundImage: `url(${imageUrl})`
           }}
+          onClick={() => history.push(`${match.url}/${collectionId}/${id}`)}
         />
       }
       <div className='collection-footer'>
