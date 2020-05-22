@@ -12,18 +12,21 @@ import CheckoutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
 
+// import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
 
 import { setSearchString } from './redux/search/search.action';
 import { selectSearchString } from './redux/search/search.selectors';
 
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
+
 class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    // const { setCurrentUser, collectionsArray } = this.props;
     const { setCurrentUser } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -39,17 +42,21 @@ class App extends React.Component {
       }
 
       setCurrentUser(userAuth);
+    // addCollectionAndDocuments('collections',collectionsArray.map(({title, items}) => ({title,items})));
     });
   }
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
+    this.props.selectSearchString('');
   }
 
   handleChange = (e) => {
     // this.setState({ searchString: e.target.value },() => console.log(this.state.searchString))
-    this.props.setSearchString(e.target.value)
+    this.props.setSearchString(e.target.value);
   }
+
+
 
   render() {
     return (
@@ -78,7 +85,8 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  searchString: selectSearchString
+  searchString: selectSearchString,
+  collectionsArray: selectCollectionsForPreview
 });
 
 const mapDispatchToProps = dispatch => ({

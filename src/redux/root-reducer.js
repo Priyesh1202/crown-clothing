@@ -11,7 +11,7 @@ import searchReducer from './search/search.reducer';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cart','search']
+  whitelist: ['cart']
 };
 
 const rootReducer = combineReducers({
